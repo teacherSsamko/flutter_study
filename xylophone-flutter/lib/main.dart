@@ -9,69 +9,36 @@ class XylophoneApp extends StatelessWidget {
     player.play('note$soundNumber.wav');
   }
 
+  Widget buildKey({MaterialColor color, int noteNumber}) {
+    return Expanded(
+      child: TextButton(
+        onPressed: () {
+          playSound(noteNumber);
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(color),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: Column(children: [
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(1);
-                },
-              ),
-              color: Colors.red,
-            ),
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(2);
-                },
-              ),
-              color: Colors.orange,
-            ),
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(3);
-                },
-              ),
-              color: Colors.yellow,
-            ),
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(4);
-                },
-              ),
-              color: Colors.green,
-            ),
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(5);
-                },
-              ),
-              color: Colors.teal,
-            ),
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(6);
-                },
-              ),
-              color: Colors.blue,
-            ),
-            Container(
-              child: TextButton(
-                onPressed: () {
-                  playSound(7);
-                },
-              ),
-              color: Colors.purple,
-            ),
-          ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildKey(color: Colors.red, noteNumber: 1),
+              buildKey(color: Colors.yellow, noteNumber: 2),
+              buildKey(color: Colors.orange, noteNumber: 3),
+              buildKey(color: Colors.green, noteNumber: 4),
+              buildKey(color: Colors.teal, noteNumber: 5),
+              buildKey(color: Colors.blue, noteNumber: 6),
+              buildKey(color: Colors.purple, noteNumber: 7),
+            ],
+          ),
         ),
       ),
     );
