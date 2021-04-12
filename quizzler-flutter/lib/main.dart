@@ -31,16 +31,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  int qNumber = 0;
-
-  void nextQuestion() {
-    if (qNumber < quizBrain.questionBank.length - 1) {
-      qNumber++;
-    } else {
-      qNumber = 0;
-    }
-  }
-
   void rightAnswer() {
     scoreKeeper.add(Icon(
       Icons.check,
@@ -67,7 +57,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questionBank[qNumber].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -93,8 +83,7 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked true.
                 setState(() {
-                  bool correctAnswer =
-                      quizBrain.questionBank[qNumber].questionAnswer;
+                  bool correctAnswer = quizBrain.getQuestionAnswer();
 
                   if (correctAnswer == true) {
                     rightAnswer();
@@ -102,7 +91,7 @@ class _QuizPageState extends State<QuizPage> {
                     wrongAnswer();
                   }
 
-                  nextQuestion();
+                  quizBrain.nextQuestion();
                 });
               },
             ),
@@ -123,8 +112,7 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked false.
                 setState(() {
-                  bool correctAnswer =
-                      quizBrain.questionBank[qNumber].questionAnswer;
+                  bool correctAnswer = quizBrain.getQuestionAnswer();
 
                   if (correctAnswer == false) {
                     rightAnswer();
@@ -132,7 +120,7 @@ class _QuizPageState extends State<QuizPage> {
                     wrongAnswer();
                   }
 
-                  nextQuestion();
+                  quizBrain.nextQuestion();
                 });
               },
             ),
