@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import 'quizBrain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -29,18 +31,10 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  List<Question> questions = [
-    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
-    Question(
-        q: 'Approximately one quarter of human bones are in the feet.',
-        a: true),
-    Question(q: 'A slug\'s blood is green.', a: true),
-  ];
-
   int qNumber = 0;
 
   void nextQuestion() {
-    if (qNumber < questions.length - 1) {
+    if (qNumber < quizBrain.questionBank.length - 1) {
       qNumber++;
     } else {
       qNumber = 0;
@@ -73,7 +67,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[qNumber].questionText,
+                quizBrain.questionBank[qNumber].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -99,7 +93,8 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked true.
                 setState(() {
-                  bool correctAnswer = questions[qNumber].questionAnswer;
+                  bool correctAnswer =
+                      quizBrain.questionBank[qNumber].questionAnswer;
 
                   if (correctAnswer == true) {
                     rightAnswer();
@@ -128,7 +123,8 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked false.
                 setState(() {
-                  bool correctAnswer = questions[qNumber].questionAnswer;
+                  bool correctAnswer =
+                      quizBrain.questionBank[qNumber].questionAnswer;
 
                   if (correctAnswer == false) {
                     rightAnswer();
