@@ -22,19 +22,3 @@ class ReusableCard extends StatelessWidget {
     );
   }
 }
-// GestureDetector(
-// onTap: () {
-// setState(() {
-// selectedGender = Gender.male;
-// });
-// },
-// child: ReusableCard(
-// color: selectedGender == Gender.male
-// ? activeCardColor
-//     : inactiveCardColor,
-// cardChild: IconContent(
-// icon: FontAwesomeIcons.mars,
-// label: 'MALE',
-// ),
-// ),
-// ),
