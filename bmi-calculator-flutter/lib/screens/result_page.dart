@@ -2,8 +2,18 @@ import 'package:bmi_calculator/components/large_bottom_button.dart';
 import 'package:bmi_calculator/components/reusable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:bmi_calculator/constants.dart';
+import 'package:flutter/widgets.dart';
 
 class ResultsPage extends StatelessWidget {
+  ResultsPage(
+      {@required this.bmi,
+      @required this.result,
+      @required this.interpretation});
+
+  final String bmi;
+  final String result;
+  final String interpretation;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,18 +40,23 @@ class ResultsPage extends StatelessWidget {
               color: kActiveCardColor,
               cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Normal',
+                    result,
                     style: kResultTextStyle,
                   ),
                   Text(
-                    '19.6',
+                    bmi,
                     style: kBMITextStyle,
                   ),
-                  Text(
-                    'You should get fatter',
-                    style: kBodyTextStyle,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      interpretation,
+                      textAlign: TextAlign.center,
+                      style: kBodyTextStyle,
+                    ),
                   ),
                 ],
               ),
