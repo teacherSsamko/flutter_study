@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'coin_data.dart';
 import 'dart:io' show Platform;
 
+import 'coin_data.dart';
+import 'coin_data.dart';
+import 'coin_data.dart';
+
 class PriceScreen extends StatefulWidget {
   @override
   _PriceScreenState createState() => _PriceScreenState();
@@ -10,7 +14,8 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
-  String USDrate = '10';
+  String currentRate = '?';
+  CoinData coinData = CoinData();
 
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> dropdownItems = [];
@@ -26,6 +31,7 @@ class _PriceScreenState extends State<PriceScreen> {
       value: selectedCurrency,
       items: dropdownItems,
       onChanged: (value) {
+        getData(currency: value);
         setState(() {
           selectedCurrency = value;
         });
@@ -43,20 +49,20 @@ class _PriceScreenState extends State<PriceScreen> {
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0,
       onSelectedItemChanged: (selectedIndex) {
-        print(selectedIndex);
+        selectedCurrency = currenciesList[selectedIndex];
+        getData(currency: selectedCurrency);
       },
       children: pickerItems,
     );
   }
 
-  //TODO: Create a method here called getData() to get the coin data from coin_data.dart
-  void getData() async {
-    var response = await CoinData().getCoinData();
+  void getData({String currency: "USD"}) async {
+    var response = await coinData.getCoinData(currency: currency);
     print(response["rate"]);
     double rate = response["rate"];
     print(rate.round().toString());
     setState(() {
-      USDrate = rate.round().toString();
+      currentRate = rate.round().toString();
     });
   }
 
@@ -87,8 +93,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  //TODO: Update the Text Widget with the live bitcoin data here.
-                  '1 BTC = $USDrate USD',
+                  '1 BTC = $currentRate $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
