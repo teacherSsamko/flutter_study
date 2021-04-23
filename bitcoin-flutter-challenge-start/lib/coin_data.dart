@@ -36,9 +36,9 @@ const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
 const apiKey = coinAPIKey;
 
 class CoinData {
-  dynamic getCoinData({String currency: "USD"}) async {
+  dynamic getCoinData({String currency: "USD", String crypto: "BTC"}) async {
     var url =
-        Uri.parse('https://rest.coinapi.io/v1/exchangerate/BTC/$currency');
+        Uri.parse('https://rest.coinapi.io/v1/exchangerate/$crypto/$currency');
     var response = await http.get(
       url,
       headers: {"X-CoinAPI-Key": apiKey},
