@@ -11,7 +11,7 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'AUD';
 
-  var cryptoRates = {'BTC': '?', 'ETH': '?', 'LTC': '?'};
+  Map<String, String> cryptoRates = {'BTC': '?', 'ETH': '?', 'LTC': '?'};
   CoinData coinData = CoinData();
 
   DropdownButton<String> androidDropdown() {
