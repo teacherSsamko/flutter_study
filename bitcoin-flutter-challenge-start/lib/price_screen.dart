@@ -3,18 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'coin_data.dart';
 import 'dart:io' show Platform;
 
-import 'coin_data.dart';
-import 'coin_data.dart';
-import 'coin_data.dart';
-
 class PriceScreen extends StatefulWidget {
   @override
   _PriceScreenState createState() => _PriceScreenState();
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  String selectedCurrency = 'USD';
-  String currentRate = '?';
+  String selectedCurrency = 'AUD';
+
+  var cryptoRates = {'BTC': '?', 'ETH': '?', 'LTC': '?'};
   CoinData coinData = CoinData();
 
   DropdownButton<String> androidDropdown() {
@@ -56,20 +53,41 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
+  List<RateCard> setCards() {
+    List<RateCard> cardList = [];
+    for (String crypto in cryptoList) {
+      RateCard card = RateCard(
+        currentRate: cryptoRates[crypto],
+        selectedCurrency: selectedCurrency,
+        coinType: crypto,
+      );
+      cardList.add(card);
+    }
+
+    return cardList;
+  }
+
   void getData({String currency: "USD"}) async {
-    var response = await coinData.getCoinData(currency: currency);
-    print(response["rate"]);
-    double rate = response["rate"];
-    print(rate.round().toString());
-    setState(() {
-      currentRate = rate.round().toString();
-    });
+    double rate;
+    for (String crypto in cryptoList) {
+      var response =
+          await coinData.getCoinData(currency: currency, crypto: crypto);
+      print(response["rate"]);
+      rate = response["rate"];
+      cryptoRates[crypto] = rate.round().toString();
+      print(cryptoRates[crypto]);
+
+      setState(() {
+        print('get data');
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getData();
+    getData(currency: selectedCurrency);
+    print("init");
   }
 
   @override
@@ -82,26 +100,9 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = $currentRate $selectedCurrency',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: setCards(),
           ),
           Container(
             height: 150.0,
@@ -111,6 +112,42 @@ class _PriceScreenState extends State<PriceScreen> {
             child: Platform.isIOS ? iOSPicker() : androidDropdown(),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RateCard extends StatelessWidget {
+  RateCard(
+      {@required this.currentRate,
+      @required this.selectedCurrency,
+      @required this.coinType});
+
+  final String currentRate;
+  final String selectedCurrency;
+  final String coinType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+      child: Card(
+        color: Colors.lightBlueAccent,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+          child: Text(
+            '1 $coinType = $currentRate $selectedCurrency',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
